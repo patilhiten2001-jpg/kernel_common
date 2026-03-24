@@ -1,0 +1,31 @@
+name: Build Kernel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install deps
+      run: |
+        sudo apt update
+        sudo apt install -y bc bison flex libssl-dev make clang lld
+
+    - name: Setup KernelSU
+      run: bash setup.sh
+
+    - name: Build
+      run: |
+        export ARCH=arm64
+        make defconfig
+        make -j$(nproc)
+
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: kernel
+        path: arch/arm64/boot/Image
