@@ -25,7 +25,9 @@ jobs:
         make -j$(nproc)
 
     - name: Upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: kernel
-        path: arch/arm64/boot/Image
+  uses: actions/upload-artifact@v4
+  with:
+    name: kernel
+    path: |
+      arch/arm64/boot/Image
+      arch/arm64/boot/Image.gz
